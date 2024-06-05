@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 5px;
     /* Largura da barra de rolagem */
 }
 
@@ -14,7 +14,7 @@
 ::-webkit-scrollbar-thumb {
     background: #888;
     /* Cor da alça da barra de rolagem */
-    border-radius: 6px;
+    border-radius: 5px;
     /* Borda arredondada da alça */
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -60,7 +60,6 @@ ul {
 }
 
 body {
-    min-height: 100vh;
     color: var(--color-text);
     background: var(--color-background);
     line-height: 1.6;
