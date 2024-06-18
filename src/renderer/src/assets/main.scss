@@ -1,8 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.ck { 
+    h2{
+        font-size: 45px;
+    }
+
+    h3{
+        font-size: 35px;
+    }
+
+    h4{
+        font-size: 25px;
+    }
+}
+
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 2px;
     /* Largura da barra de rolagem */
 }
 

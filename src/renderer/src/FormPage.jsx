@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from './components/Form';
 import LogoTLK from './assets/1-2-logo-white.svg';
 
-const FormPage = ({ profissionalSelecionado }) => {
+export default function FormPage ({ profissionalSelecionado }) {
     const navigate = useNavigate();
     const formRef = useRef();
 
@@ -31,5 +31,3 @@ const FormPage = ({ profissionalSelecionado }) => {
         </div>
     );
 };
-
-export default FormPage;
