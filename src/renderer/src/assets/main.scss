@@ -15,6 +15,20 @@
     h4{
         font-size: 25px;
     }
+
+    ul, ol, li, menu{
+        list-style: unset;
+        padding: 0 25px;
+
+        ::marker{
+            position: relative;
+            margin-left: 50px;
+        }
+    }
+}
+
+.ck-powered-by {
+    display: none;
 }
 
 ::-webkit-scrollbar {

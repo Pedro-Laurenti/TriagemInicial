@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
-import SelectPage from './components/SelectPage'
+import SelectPage from './SelectPage'
 import FormPage from './FormPage'
 import profissionaisData from './assets/dados.json'
 

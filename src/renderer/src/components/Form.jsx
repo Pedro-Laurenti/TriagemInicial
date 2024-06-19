@@ -1,39 +1,28 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import {useState} from 'react'
+import {useState} from 'react';
 
 import TittleForm, { SubtittleForm } from './TittleForm';
-import InlineInput, { CheckBoxInput, ContactInput, DateInput, GroupSelectInput, IrmãosInput, NumInput, BooleanRadioInput, RadioInput, RichTextInput, SimpleTextInput, TriagemNeonatal, ExamesSelect } from './FormComponents';
+import InlineInput, { CheckBoxInput, ContactInput, DateInput, GroupSelectInput, IrmãosInput, NumInput, BooleanRadioInput, RadioInput, RichTextInput, SimpleTextInput, TriagemNeonatal, ExamesSelect, DateInputOutput } from './FormComponents';
 
 export default function Form ({ profissional }) {
     const leftColRef = useRef(null);
-    const rigColRef = useRef(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const leftColData = leftColRef.current.getFormData();
-        const rigColData = rigColRef.current.getFormData();
 
         const formData = {
             name: profissional.nome,
             ...leftColData,
-            ...rigColData,
         };
         window.api.generatePdf(formData);
     }
 
     return (
-        <form className="min-h-10 p-5 grid grid-cols-2 gap-4" onSubmit={handleSubmit}>
-            
+        <form className="min-h-10 p-5 grid grid-cols-2 gap-8" onSubmit={handleSubmit}>
             <LeftCol profissional={profissional}/>
-            <RigCol ref={rigColRef}/>
-
-            <button
-                type="submit"
-                id="generate-pdf"
-                className="col-span-2 bg-green-500 text-white p-2 rounded">
-                Gerar PDF
-            </button>
+            <RigCol />
         </form>
     );
 };
@@ -43,34 +32,8 @@ const LeftCol = ({profissional}) => {
     const [age,setAge] = useState({years: null, months: null, days: null})
     const [validDate,setValidDate] = useState(true)
 
-    const handleInputChange = (event) => {
-        const selectedDate = event.target.value
-        setBirthdate(selectedDate)
-
-        const today = new Date()
-        const birthDate = new Date(selectedDate)
-        const isValid = birthDate <= today
-        setValidDate(isValid)
-
-        let years = today.getFullYear() - birthDate.getFullYear()
-        let months = today.getMonth() - birthDate.getMonth()
-        let days = today.getDate() - birthDate.getDate()
-
-        if (months < 0 || (months === 0 && today.getDate() < birthDate.getDate())) {
-            years--
-            months += 12
-        }
-
-        if (days < 0) {
-            const prevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 0)
-            days += prevMonth.getDate()
-            months--
-        }
-        setAge({years, months, days})
-    }
-
     return (
-        <div>
+        <div className=' bg-white p-5'>
             <TittleForm Tittle={"1. IDENTIFICAÇÃO"}/>
             <div className="py-2 px-8 mb-4">
                 <SubtittleForm SubTittle={"Identificação de Autoria:"} />
@@ -91,7 +54,17 @@ const LeftCol = ({profissional}) => {
                 <SubtittleForm SubTittle={"Identificação do Paciente:"} />
 
                 <InlineInput TittleInput={"Nome do paciente"} PlaceHolder={"Nome"} />
-                <DateInput TittleInput={"Data de nascimento"} ValueInput={birthdate} InputHandle={handleInputChange} />
+
+                <DateInputOutput
+                    TittleInput="Data de nascimento" 
+                    birthdate={birthdate} 
+                    setBirthdate={setBirthdate}
+                    age={age}
+                    setAge={setAge}
+                    validDate={validDate}
+                    setValidDate={setValidDate}
+                />
+
                 Idade atual
                 <div
                     className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-4">
@@ -99,7 +72,7 @@ const LeftCol = ({profissional}) => {
                         ? `${
                     age.years !== null
                         ? `${age.years} anos, ${age.months} meses e ${age.days} dias`
-                        : 'Idade calculada'}` : 'Formato inválido'}
+                        : 'Idade calculada'}` : 'Inválido: data posterior ao dia de hoje'}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 place-items-begin align-bottom">
@@ -140,10 +113,10 @@ const LeftCol = ({profissional}) => {
             <TittleForm Tittle={"4. HISTÓRICO DE ACOMPANHAMENTO"}/>
             <div className="py-2 px-8 mt-2">
             <InlineInput TittleInput={"Encaminhado por"} PlaceHolder={""} />
-            <DateInput TittleInput={"Data da última consulta"} ValueInput={""} InputHandle={""} />
+            <DateInput TittleInput={"Data da última consulta"} />
 
-                <b>Acompanhamentos profissionais já realizados anteriormente</b>
-                <div className="py-2 px-8 my-3 grid grid-cols-3 gap-4 justify-between">
+                <span className='mt-5'>Acompanhamentos profissionais já realizados anteriormente</span>
+                <div className="py-2 my-3 lg:grid grid-cols-3 gap-4 justify-between">
                     <CheckBoxInput TittleInput={"Psicologia"} NameCheckInput={"acompanhamentos"} IdCheckInput={"acompanhamentos"} />
                     <CheckBoxInput TittleInput={"Fonoaudiologia"} NameCheckInput={"acompanhamentos"} IdCheckInput={"acompanhamentos"} />
                     <CheckBoxInput TittleInput={"Terapia ocupacional"} NameCheckInput={"acompanhamentos"} IdCheckInput={"acompanhamentos"} />
@@ -165,7 +138,6 @@ const LeftCol = ({profissional}) => {
 }
 
 const RigCol = () => {
-
     const optionsSelect1 = [
         {
             label: 'Prematuro',
@@ -221,42 +193,42 @@ const RigCol = () => {
 
     const questionsbool2 = [
         {
-            question: 'Houveram intercorrências durante o período de gestação?',
-            name: 'gestation',
+            question: 'Durante o período de gestação?',
+            name: 'complicacoes1',
             options: ['Sim', 'Não'],
             followUp: {
                 value: 'sim',
                 question: 'Quais?',
                 inputType: 'text',
-                inputName: 'substanceDetails',
+                inputName: 'complicacoes1Details',
             },
         },
     ];
 
     const questionsbool3 = [
         {
-            question: 'Houveram intercorrências/complicações durante o parto?',
-            name: 'gestation',
+            question: 'Durante o parto?',
+            name: 'complicacoes2',
             options: ['Sim', 'Não'],
             followUp: {
                 value: 'sim',
                 question: 'Quais?',
                 inputType: 'text',
-                inputName: 'substanceDetails',
+                inputName: 'complicacoes2Details',
             },
         },
     ];
 
     const questionsbool4 = [
         {
-            question: 'Houveram intercorrências/complicações após o nascimento?',
-            name: 'gestation',
+            question: 'Após o nascimento?',
+            name: 'complicacoes3',
             options: ['Sim', 'Não'],
             followUp: {
                 value: 'sim',
                 question: 'Quais?',
                 inputType: 'text',
-                inputName: 'substanceDetails',
+                inputName: 'complicacoes3Details',
             },
         },
     ];
@@ -321,12 +293,8 @@ const RigCol = () => {
         },
     ];
 
-    const examesConfig2 = [
-
-    ];
-
     return (
-        <div>
+        <div className=' bg-white p-5'>
             <TittleForm Tittle={"5. DEMANDAS PRINCIPAIS RELATADAS"}/>
             <RichTextInput className={'mb-10'} />
             
@@ -352,6 +320,7 @@ const RigCol = () => {
                     <NumInput TittleInput={"Altura ao Nascer:"} PlaceHolder={"1 - 10"} maxValue={80} maxAlgarismo={2} />
                 </div>
 
+                <SubtittleForm SubTittle={"Houveram intercorrências/complicações:"} />
                 <BooleanRadioInput questions={questionsbool2} />
                 <BooleanRadioInput questions={questionsbool3} />
                 <BooleanRadioInput questions={questionsbool4} />
@@ -362,14 +331,13 @@ const RigCol = () => {
                 <SimpleTextInput TittleInput={"Observações Pertinentes"} placeholder={"Escreva as observações aqui."} />
             </div>
 
+            <TittleForm Tittle={"7. HISTÓRICO DE SAÚDE"}/>
             <div className="py-2 px-8 mb-4">
-                <TittleForm Tittle={"7. HISTÓRICO DE SAÚDE"}/>
                 <ExamesSelect initialSelects={examesConfig1} />
             </div>
         </div>
     )
 }
-
 
 LeftCol.propTypes = {
     profissional: PropTypes.shape({

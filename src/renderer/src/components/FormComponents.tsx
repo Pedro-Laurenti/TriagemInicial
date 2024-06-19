@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import InputMask from 'react-input-mask'
 
 export default function InlineInput({TittleInput, PlaceHolder}) {
     return (
@@ -18,21 +17,60 @@ export default function InlineInput({TittleInput, PlaceHolder}) {
 }
 
 
-export function DateInput({ TittleInput,ValueInput,InputHandle }) {
+export function DateInput({ TittleInput }) {
     return (
         <label>
             {TittleInput}
             <input
                 className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-6"
-                placeholder="Nome"
                 type="date"
-                value={ValueInput}
-                onChange={InputHandle}
             />
         </label>
         
     )
 }
+
+export function DateInputOutput({ TittleInput, birthdate, setBirthdate, age, setAge, validDate, setValidDate }) {
+
+    const handleInputChange = (event) => {
+        const selectedDate = event.target.value;
+        setBirthdate(selectedDate);
+
+        const today = new Date();
+        const birthDate = new Date(selectedDate);
+        const isValid = birthDate <= today;
+        setValidDate(isValid);
+
+        let years = today.getFullYear() - birthDate.getFullYear();
+        let months = today.getMonth() - birthDate.getMonth();
+        let days = today.getDate() - birthDate.getDate();
+
+        if (months < 0 || (months === 0 && today.getDate() < birthDate.getDate())) {
+            years--;
+            months += 12;
+        }
+
+        if (days < 0) {
+            const prevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 0);
+            days += prevMonth.getDate();
+            months--;
+        }
+        setAge({ years, months, days });
+    };
+
+    return (
+        <label>
+            {TittleInput}
+            <input
+                className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-6"
+                type="date"
+                value={birthdate}
+                onChange={handleInputChange}
+            />
+        </label>
+    );
+}
+
 
 export function NumInput({ TittleInput, PlaceHolder, maxValue, maxAlgarismo }) {
     const [value, setValue] = useState('');
@@ -70,17 +108,33 @@ export function NumInput({ TittleInput, PlaceHolder, maxValue, maxAlgarismo }) {
     );
 }
 
+import { InputMask, type Track } from '@react-input/mask';
+
 export function ContactInput({ TittleInput }) {
+    const track: Track = ({ inputType, value, data, selectionStart, selectionEnd }) => {
+        if (inputType === 'insert' && !/^\D*/.test(data) && selectionStart <= 1) {
+        return `1${data}`;
+        }
+    
+        if (inputType !== 'insert' && selectionStart <= 1 && selectionEnd < value.length) {
+        if (selectionEnd > 2) {
+            return '1';
+        }
+        if (selectionEnd === 2) {
+            return false;
+        }
+        }
+    
+        return data;
+    };
+
     return (
+
         <label>
             {TittleInput}
-            <InputMask
-                className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-4"
-                type="text"
-                mask="(99) 99999-9999"
-                placeholder="(00) 00000-0000"></InputMask>
+            <InputMask className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-4"
+            placeholder="(00) 00000-0000" mask="(__) _____-____" replacement={{ _: /\d/ }} track={track} />
         </label>
-        
     )
 }
 
@@ -182,6 +236,7 @@ export function SimpleTextInput({ TittleInput, placeholder }) {
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import TittleForm, { SubtittleForm } from './TittleForm';
 
 export function RichTextInput({className}) {
     return(
@@ -247,21 +302,24 @@ interface BooleanRadioInputProps {
     questions: Question[];
 }
 
-export function BooleanRadioInput({ questions }: BooleanRadioInputProps) {
-    const [usoSubstancias, setUsoSubstancias] = useState<boolean | null>(null);
+export function BooleanRadioInput({ questions }) {
+    const [followUpDetails, setFollowUpDetails] = useState({});
 
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>, followUp?: { value: string }) => {
+    const handleRadioChange = (event, followUp, name) => {
         if (followUp) {
-            setUsoSubstancias(event.target.value === followUp.value);
+            setFollowUpDetails((prevDetails) => ({
+                ...prevDetails,
+                [name]: event.target.value === followUp.value,
+            }));
         }
     };
 
     return (
         <div className="mb-2">
             {questions.map((q, index) => (
-                <div key={index} className="mb-4 flex justify-between">
+                <div key={index} className="mb-4 flex flex-col justify-between">
                     {q.question}
-                    <section className="flex flex-row gap-10">
+                    <section className="flex gap-10">
                         {q.options.map((option, idx) => (
                             <label key={idx}>
                                 <input
@@ -269,30 +327,29 @@ export function BooleanRadioInput({ questions }: BooleanRadioInputProps) {
                                     type="radio"
                                     name={q.name}
                                     value={option.toLowerCase()}
-                                    onChange={(e) => handleRadioChange(e, q.followUp)}
+                                    onChange={(e) => handleRadioChange(e, q.followUp, q.name)}
                                 />
                                 {option}
                             </label>
                         ))}
                     </section>
+                    {followUpDetails[q.name] && q.followUp && (
+                        <div className="mt-2">
+                            <label>
+                                {q.followUp.question}
+                                <input
+                                    className="p-1 border rounded w-full"
+                                    type={q.followUp.inputType}
+                                    name={q.followUp.inputName}
+                                />
+                            </label>
+                        </div>
+                    )}
                 </div>
             ))}
-            {usoSubstancias && (
-                <div className="mt-6">
-                    <label>
-                        {questions.find(q => q.name === 'gestation')?.followUp?.question}
-                        <input
-                            className="my-2 p-1 border rounded w-full"
-                            type="text"
-                            name="substanceDetails"
-                        />
-                    </label>
-                </div>
-            )}
         </div>
     );
 }
-
 
 export function TriagemNeonatal ({ initialCheckboxes }) {
     const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
@@ -308,10 +365,10 @@ export function TriagemNeonatal ({ initialCheckboxes }) {
     };
 
     return (
-        <div className="mt-8 ">
-            Triagem Neonatal
+        <div className="my-8 ">
+            <SubtittleForm SubTittle={"Triagem Neonatal"} />
             {checkboxes.map((checkbox: { id: React.Key | null | undefined; label: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; isChecked: any; radios: any[]; }) => (
-                <div key={checkbox.id} className="grid grid-cols-3">
+                <div key={checkbox.id} className="grid grid-cols-2">
                     <p>{checkbox.label}</p>
                     <label>
                         <input
@@ -325,11 +382,11 @@ export function TriagemNeonatal ({ initialCheckboxes }) {
                         Realizou?
                     </label>
                     {checkbox.isChecked && (
-                        <section className="grid grid-cols-2">
+                        <section className="grid grid-cols-1 mb-2">
                             {checkbox.radios.map((radioLabel, index) => (
                                 <label key={index}>
                                     <input
-                                        className="mr-2"
+                                        className="ml-2 mb-2"
                                         type="radio"
                                         name={`radio-${checkbox.id}`}
                                         id={`${radioLabel.toLowerCase()}-${checkbox.id}`}
@@ -363,15 +420,15 @@ export function ExamesSelect ({ initialSelects }) {
     };
 
     return (
-        <div className="py-2 px-8 mt-2">
+        <div className="py-2 mt-2">
             {selects.map((select) => (
-                <div key={select.id} className="grid grid-cols-3 mb-4">
+                <div key={select.id} className="grid grid-cols-2 mb-4">
                     <b>{select.label}</b>
                     <label>
                         <select
                             name={`select-${select.id}`}
                             id={`select-${select.id}`}
-                            className="mr-2 w-3/4 bg-white border border-slate-300 rounded px-4 py-2 text-slate-600 mb-2"
+                            className="bg-white border border-slate-300 rounded px-4 py-2 text-slate-600 mb-2 w-full"
                             value={select.selected}
                             onChange={(e) => handleSelectChange(select.id, e.target.value)}
                         >
@@ -383,11 +440,11 @@ export function ExamesSelect ({ initialSelects }) {
                         </select>
                     </label>
                     {select.selected !== 'Não Realizou' && (
-                        <section className="grid grid-cols-2">
+                        <section className="w-full col-span-2 flex gap-5 justify-end">
                             {select.radios.map((radioLabel, index) => (
                                 <label key={index}>
                                     <input
-                                        className="mr-2"
+                                        className=""
                                         type="radio"
                                         name={`radio-${select.id}`}
                                         id={`${radioLabel.toLowerCase()}-${select.id}`}
