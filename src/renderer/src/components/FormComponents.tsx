@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 
-export default function InlineInput({TittleInput, PlaceHolder}) {
+export default function InlineInput ({ TittleInput, PlaceHolder, inputRef }) {
     return (
-        <label>
-            {TittleInput}
-            <input
-                className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-6"
-                placeholder={PlaceHolder}
-                type="text"
-                name=""
-                id=""
-            />
-        </label>
-        
-    )
-}
+        <div>
+            <label>
+                {TittleInput}
+                <input
+                    ref={inputRef}
+                    className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-6"
+                    placeholder={PlaceHolder}
+                    type="text"
+                />
+            </label>
+        </div>
+    );
+};
 
 
 export function DateInput({ TittleInput }) {

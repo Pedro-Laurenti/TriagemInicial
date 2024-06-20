@@ -14,7 +14,7 @@ export default function FormPage ({ profissionalSelecionado }) {
                 </div>
                 <img alt="logo" className="logo h-20" src={LogoTLK} />
             </div>
-            <div className="overflow-x-hidden overflow-y-scroll max-h-[80vh]" >
+            <div className="overflow-x-hidden" >
                 {profissionalSelecionado && <Form profissional={profissionalSelecionado} idForm={"form"} />}
             </div>
             <div className="mt-5 flex justify-center space-x-4">
@@ -22,12 +22,6 @@ export default function FormPage ({ profissionalSelecionado }) {
                     className="border border-red-500 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-transparent hover:text-red-500"
                     onClick={() => navigate('/')}>
                     Sair
-                </button>
-                <button
-                    type="submit"
-                    id="btn-gerar-pdf"
-                    className="border border-green-500 bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-transparent hover:text-green-500">
-                    Gerar PDF
                 </button>
             </div>
         </div>
