@@ -1,27 +1,26 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {useState} from 'react';
-
 import TittleForm, { SubtittleForm } from './TittleForm';
-import InlineInput, { CheckBoxInput, ContactInput, DateInput, GroupSelectInput, IrmãosInput, NumInput, BooleanRadioInput, RadioInput, RichTextInput, SimpleTextInput, TriagemNeonatal, ExamesSelect, DateInputOutput } from './FormComponents';
+import InlineInput, {
+    CheckBoxInput,
+    ContactInput,
+    DateInput,
+    GroupSelectInput,
+    IrmãosInput,
+    NumInput,
+    BooleanRadioInput,
+    RadioInput,
+    RichTextInput,
+    SimpleTextInput,
+    TriagemNeonatal,
+    ExamesSelect,
+    DateInputOutput
+} from './FormComponents';
 
-export default function Form ({ profissional }) {
-    const leftColRef = useRef(null);
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const leftColData = leftColRef.current.getFormData();
-
-        const formData = {
-            name: profissional.nome,
-            ...leftColData,
-        };
-        window.api.generatePdf(formData);
-    }
-
+export default function Form({ profissional, idForm }) {
     return (
-        <form className="min-h-10 p-5 grid grid-cols-2 gap-8" onSubmit={handleSubmit}>
-            <LeftCol profissional={profissional}/>
+        <form className="min-h-10 p-5 grid grid-cols-2 gap-8" id={idForm}>
+            <LeftCol profissional={profissional} />
             <RigCol />
         </form>
     );
