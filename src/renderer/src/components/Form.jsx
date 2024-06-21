@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import InlineInput from './FormComponents';
-
 const { ipcRenderer } = window;
 
 export default function Form({ profissional, idForm }) {
@@ -15,11 +14,19 @@ const LeftCol = () => {
     const nomeInputRef = useRef(null);
 
     const handleGeneratePDF = async () => {
-        const nome = nomeInputRef.current.value;
+        const nome = nomeInputRef.current ? nomeInputRef.current.value : '';
+        if (!nome) {
+            console.error('Nome do paciente não foi preenchido.');
+            return;
+        }
 
         // Enviar pedido ao processo principal
-        const result = await ipcRenderer.invoke('generate-pdf', nome);
-        console.log(result);
+        try {
+            const result = await ipcRenderer.invoke('generate-pdf', nome);
+            console.log(result);
+        } catch (error) {
+            console.error('Erro ao gerar PDF:', error);
+        }
     };
     
     return (
