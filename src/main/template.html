@@ -5,31 +5,197 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Triagem - {{nome}}</title>
     <style>
-        .test1 {
-            width: 100% ;
+        html, body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .field {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .field-ver{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .field label {
+            font-weight: bold;
+        }
+        .field input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .header{
+            background-color: #34b0e6;
+            width: 100%;
+            height: 150px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-
+            color: white;
+            margin-bottom: 50px;
+            gap: 10px;
+        }
+        h1,h2,h3,h4,h5{
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <div class="test1">
-        <div>
-            <div>
-                <label>
-                    Nome do paciente:
-                    <input
-                        class="test"
-                        placeholder="Nome"
-                        type="text"
-                        value="{{nome}}"
-                        readonly
-                    />
-                </label>
-            </div>
+    <div class="header">
+        <h1>TRIAGEM INICIAL INFANTIL</h1>
+        <h2>Rede de Clínicas - Therapies Love Kids</h2>
+    </div>
+    <div class="container">
+        <div class="field">
+            <label for="nome">Nome do paciente:</label>
+            <input
+                id="nome"
+                type="text"
+                value="{{nome}}"
+                readonly
+            />
+        </div>
+        <div class="field">
+            <label for="dataNascimento">Data de nascimento:</label>
+            <input
+                id="dataNascimento"
+                type="text"
+                value="{{dataNascimento}}"
+                readonly
+            />
+        </div>
+        <div class="field">
+            <label for="peso">Peso:</label>
+            <input
+                id="peso"
+                type="text"
+                value="{{peso}}"
+                readonly
+            />
+        </div>
+        <div class="field">
+            <label for="altura">Altura:</label>
+            <input
+                id="altura"
+                type="text"
+                value="{{altura}}"
+                readonly
+            />
+        </div>
+        <div class="field">
+            <label for="nomePai">Nome do pai:</label>
+            <input
+                id="nomePai"
+                type="text"
+                value="{{nomePai}}"
+                readonly
+            />
+        </div>
+        <div class="field">
+            <label for="nomeMãe">Nome da mãe:</label>
+            <input
+                id="nomeMãe"
+                type="text"
+                value="{{nomeMãe}}"
+                readonly
+            />
+        </div>
+
+        <div class="field">
+            <label for="contato">Contato dos responsáveis:</label>
+            <input
+                id="contato"
+                type="text"
+                value="{{contato}}"
+                readonly
+            />
+        </div>
+
+        <div class="field">
+            <label for="irmãos">Irmãos:</label>
+            <input
+                id="irmãos"
+                type="text"
+                value="{{irmãos}}"
+                readonly
+            />
+        </div>
+
+        <div class="field-ver">
+            <label>
+                <input
+                type="radio"
+                name="radio1"
+                value="Sem indicação diagnóstica"
+                {{Radio1IndicaçãoDiagnóstica}}
+                />
+                Sem indicação diagnóstica
+            </label>
+            <label>
+                <input
+                type="radio"
+                name="radio1"
+                value="Hipótese diagnóstica"
+                {{Radio1HipóteseDiagnóstica}}
+                />
+                Hipótese diagnóstica
+            </label>
+            <label>
+                <input
+                type="radio"
+                name="radio1"
+                value="Diagnóstico concluído"
+                {{Radio1DiagnósticoConcluido}}
+                />
+                Diagnóstico concluído
+            </label>
+        </div>
+    
+        <div class="field-ver">
+            <label>
+                <input
+                type="radio"
+                name="radio2"
+                value="Opção 1"
+                {{Radio2Opcao1}}
+                />
+                Opção 1
+            </label>
+            <label>
+                <input
+                type="radio"
+                name="radio2"
+                value="Opção 2"
+                {{Radio2Opcao2}}
+                />
+                Opção 2
+            </label>
+            <label>
+                <input
+                type="radio"
+                name="radio2"
+                value="Opção 3"
+                {{Radio2Opcao3}}
+                />
+                Opção 3
+            </label>
         </div>
     </div>
 </body>

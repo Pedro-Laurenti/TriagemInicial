@@ -54,10 +54,25 @@ app.on('window-all-closed', () => {
     }
 });
 
-ipcMain.handle('generate-pdf', async (event, nome) => {
+ipcMain.handle('generate-pdf', async (event, formData) => {
     try {
         const htmlTemplate = fs.readFileSync(path.join(__dirname, './src/main/template.html'), 'utf-8');
-        const htmlContent = htmlTemplate.replace(/{{nome}}/g, nome);
+
+        const radioGroups = ['Radio1', 'Radio2'];
+
+        radioGroups.forEach(group => {
+            Object.keys(formData).forEach(key => {
+                if (key.startsWith(group)) {
+                    formData[key] = formData[key] ? 'checked' : '';
+                }
+            });
+        });
+
+        let htmlContent = htmlTemplate;
+        for (const [key, value] of Object.entries(formData)) {
+            const regex = new RegExp(`{{${key}}}`, 'g');
+            htmlContent = htmlContent.replace(regex, value);
+        }
 
         const browser = await puppeteer.launch();
         const page = await browser.newPage();

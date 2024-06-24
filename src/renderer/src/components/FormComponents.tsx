@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useImperativeHandle, forwardRef } from 'react'
 
-export default function InlineInput ({ TittleInput, PlaceHolder, inputRef }) {
+export function InlineInput ({ TittleInput, PlaceHolder, inputRef }) {
     return (
         <div>
             <label>
@@ -17,11 +17,12 @@ export default function InlineInput ({ TittleInput, PlaceHolder, inputRef }) {
 };
 
 
-export function DateInput({ TittleInput }) {
+export function DateInput({ TittleInput, inputRef }) {
     return (
         <label>
             {TittleInput}
             <input
+                ref={inputRef}
                 className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-6"
                 type="date"
             />
@@ -30,7 +31,7 @@ export function DateInput({ TittleInput }) {
     )
 }
 
-export function DateInputOutput({ TittleInput, birthdate, setBirthdate, age, setAge, validDate, setValidDate }) {
+export function DateInputOutput({ TittleInput, birthdate, setBirthdate, age, setAge, validDate, setValidDate, inputRef }) {
 
     const handleInputChange = (event) => {
         const selectedDate = event.target.value;
@@ -66,13 +67,14 @@ export function DateInputOutput({ TittleInput, birthdate, setBirthdate, age, set
                 type="date"
                 value={birthdate}
                 onChange={handleInputChange}
+                ref={inputRef}
             />
         </label>
     );
 }
 
 
-export function NumInput({ TittleInput, PlaceHolder, maxValue, maxAlgarismo }) {
+export function NumInput({ TittleInput, PlaceHolder, maxValue, maxAlgarismo, inputRef }) {
     const [value, setValue] = useState('');
 
     const handleChange = (event) => {
@@ -102,6 +104,7 @@ export function NumInput({ TittleInput, PlaceHolder, maxValue, maxAlgarismo }) {
                     max={maxValue}
                     name=""
                     id=""
+                    ref={inputRef}
                 />
             </section>
         </label>
@@ -110,7 +113,7 @@ export function NumInput({ TittleInput, PlaceHolder, maxValue, maxAlgarismo }) {
 
 import { InputMask, type Track } from '@react-input/mask';
 
-export function ContactInput({ TittleInput }) {
+export function ContactInput({ TittleInput, inputRef }) {
     const track: Track = ({ inputType, value, data, selectionStart, selectionEnd }) => {
         if (inputType === 'insert' && !/^\D*/.test(data) && selectionStart <= 1) {
         return `1${data}`;
@@ -132,32 +135,39 @@ export function ContactInput({ TittleInput }) {
 
         <label>
             {TittleInput}
-            <InputMask className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-4"
-            placeholder="(00) 00000-0000" mask="(__) _____-____" replacement={{ _: /\d/ }} track={track} />
+            <InputMask
+                className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-4"
+                placeholder="(00) 00000-0000"
+                mask="(__) _____-____"
+                replacement={{ _: /\d/ }}
+                track={track}
+                ref={inputRef}
+            />
         </label>
     )
 }
 
-export function IrmãosInput() {
-    const [siblings,setSiblings] = useState([''])
+export function IrmãosInput(props, ref) {
+    const [siblings, setSiblings] = useState(['']);
+
+    useImperativeHandle(ref, () => ({
+        getSiblings: () => siblings
+    }));
 
     const addSiblingInput = () => {
-        setSiblings([
-            ...siblings,
-            ''
-        ])
-    }
+        setSiblings([...siblings, '']);
+    };
 
     const removeSiblingInput = (index) => {
-        const updatedSiblings = siblings.filter((_, idx) => idx !== index)
-        setSiblings(updatedSiblings)
-    }
+        const updatedSiblings = siblings.filter((_, idx) => idx !== index);
+        setSiblings(updatedSiblings);
+    };
 
     const handleSiblingInputChange = (index, event) => {
-        const updatedSiblings = [...siblings]
-        updatedSiblings[index] = event.target.value
-        setSiblings(updatedSiblings)
-    }
+        const updatedSiblings = [...siblings];
+        updatedSiblings[index] = event.target.value;
+        setSiblings(updatedSiblings);
+    };
 
     return (
         <section>
@@ -166,7 +176,10 @@ export function IrmãosInput() {
                 <input
                     className="border border-slate-300 rounded w-full px-4 py-2 text-slate-600"
                     placeholder="Irmão"
-                    type="text"/>
+                    type="text"
+                    value={siblings[0]}
+                    onChange={(event) => handleSiblingInputChange(0, event)}
+                />
                 <button
                     type="button"
                     onClick={addSiblingInput}
@@ -174,36 +187,39 @@ export function IrmãosInput() {
                     +
                 </button>
             </div>
-            {siblings.map((sibling, index) => (
-                <div key={index} className="relative w-full flex flex-row items-center mb-2">
+            {siblings.slice(1).map((sibling, index) => (
+                <div key={index + 1} className="relative w-full flex flex-row items-center mb-2">
                     <input
                         className="border w-full border-slate-300 rounded px-4 py-2 text-slate-600"
                         placeholder="Irmão"
                         type="text"
                         value={sibling}
-                        onChange={(event) => handleSiblingInputChange(index, event)}/>
+                        onChange={(event) => handleSiblingInputChange(index + 1, event)}
+                    />
                     <button
                         type="button"
-                        onClick={() => removeSiblingInput(index)}
+                        onClick={() => removeSiblingInput(index + 1)}
                         className="font-bold hover:text-white hover:bg-red-500 text-red-500 border border-red-500 p-2 rounded ml-2 text-center min-w-8">
                         -
-                    </button>
-                    <button
-                        type="button"
-                        onClick={addSiblingInput}
-                        className="font-bold hover:text-white hover:bg-emerald-600 text-emerald-600 border border-emerald-600 p-2 rounded ml-2 text-center min-w-8">
-                        +
                     </button>
                 </div>
             ))}
         </section>
-    )
+    );
 }
 
-export function RadioInput({ TittleInput, NameRadioInput, IdRadioInput }) {
+export default forwardRef(IrmãosInput);
+
+export function RadioInput({ TittleInput, NameRadioInput, IdRadioInput, inputRef }) {
     return (
         <label>
-            <input className="mr-2" type="radio" name={NameRadioInput} id={IdRadioInput} />
+            <input
+                className="mr-2"
+                type="radio"
+                name={NameRadioInput}
+                id={IdRadioInput}
+                ref={inputRef}
+            />
             {TittleInput}
         </label>
     )
