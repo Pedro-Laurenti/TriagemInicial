@@ -22,7 +22,7 @@ export function DateInput({ TittleInput, inputRef }) {
         <label>
             {TittleInput}
             <input
-                ref={inputRef}
+                ref={ inputRef }
                 className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-6"
                 type="date"
             />
@@ -225,16 +225,22 @@ export function RadioInput({ TittleInput, NameRadioInput, IdRadioInput, inputRef
     )
 }
 
-export function CheckBoxInput({ TittleInput, NameCheckInput, IdCheckInput }) {
+export function CheckBoxInput({ TittleInput, NameCheckInput, IdCheckInput, inputRef }) {
     return (
         <label>
-            <input className="mr-2" type='checkbox' name={NameCheckInput} id={IdCheckInput} />
+            <input
+                className="mr-2"
+                type='checkbox'
+                name={NameCheckInput}
+                id={IdCheckInput}
+                ref={inputRef}
+            />
             {TittleInput}
         </label>
     )
 }
 
-export function SimpleTextInput({ TittleInput, placeholder }) {
+export function SimpleTextInput({ TittleInput, placeholder, inputRef }) {
     return (
             <div className="py-2 my-4">
                 {TittleInput}
@@ -244,7 +250,9 @@ export function SimpleTextInput({ TittleInput, placeholder }) {
                     name="textarea"
                     placeholder={placeholder}
                     rows={4}
-                    cols={50} />
+                    cols={50}
+                    ref={inputRef}
+                />
             </div>
         
     )
@@ -254,23 +262,25 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import TittleForm, { SubtittleForm } from './TittleForm';
 
-export function RichTextInput({className}) {
-    return(
+export function RichTextInput({ className, inputRef }) {
+    return (
         <div className={className}>
             <CKEditor
-                editor={ ClassicEditor }
-                config={{         
-                    toolbar: ['heading', '|', 'bold', 'italic', 'blockQuote', 'numberedList', 'bulletedList', 'imageUpload', 'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|', 'undo', 'redo']
-                }}  
-                onChange={ ( event ) => {
-                    console.log( event );
-                } }
-                
-                />
+                editor={ClassicEditor}
+                config={{
+                    toolbar: [
+                        'heading', '|', 'bold', 'italic', 'blockQuote', 'numberedList',
+                        'bulletedList', 'imageUpload', 'insertTable', 'tableColumn',
+                        'tableRow', 'mergeTableCells', '|', 'undo', 'redo'
+                    ]
+                }}
+                onReady={(editor) => {
+                    // Save the reference to the editor instance
+                    inputRef.current = editor;
+                }}
+            />
         </div>
-    )
-
-
+    );
 }
 
 export function GroupSelectInput({ titleInput, options }) {

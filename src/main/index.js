@@ -56,9 +56,14 @@ app.on('window-all-closed', () => {
 
 ipcMain.handle('generate-pdf', async (event, formData) => {
     try {
-        const htmlTemplate = fs.readFileSync(path.join(__dirname, './src/main/template.html'), 'utf-8');
+        const htmlTemplate = fs.readFileSync(
+            path.join(__dirname, './src/main/template.html'), 'utf-8'
+        );
 
-        const radioGroups = ['Radio1', 'Radio2'];
+        const radioGroups = [
+            'Radio1',
+            // 'Radio2',
+        ];
 
         radioGroups.forEach(group => {
             Object.keys(formData).forEach(key => {
@@ -69,10 +74,30 @@ ipcMain.handle('generate-pdf', async (event, formData) => {
         });
 
         let htmlContent = htmlTemplate;
+
         for (const [key, value] of Object.entries(formData)) {
             const regex = new RegExp(`{{${key}}}`, 'g');
             htmlContent = htmlContent.replace(regex, value);
         }
+
+        const disciplinas = [
+            'Psicologia',
+            'TerapiaOcupacional',
+            'Fisioterapia',
+            'Musicoterapia',
+            'Fonoaudiologia',
+            'Neuropsicologia',
+            'Psicomotricidade'
+        ];
+
+        let disciplinasContent = '';
+        disciplinas.forEach(disciplina => {
+            if (formData[disciplina]) {
+                disciplinasContent += `<p>${disciplina.replace(/([A-Z])/g, ' $1').trim()}</p>`;
+            }
+        });
+
+        htmlContent = htmlContent.replace('{{disciplinasContent}}', disciplinasContent);
 
         const browser = await puppeteer.launch();
         const page = await browser.newPage();

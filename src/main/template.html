@@ -28,12 +28,20 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
+            margin-bottom: 15px;
         }
 
         .field label {
             font-weight: bold;
         }
         .field input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .field textarea {
             width: 100%;
             padding: 8px;
             margin-top: 5px;
@@ -167,35 +175,23 @@
                 Diagnóstico concluído
             </label>
         </div>
-    
-        <div class="field-ver">
-            <label>
-                <input
-                type="radio"
-                name="radio2"
-                value="Opção 1"
-                {{Radio2Opcao1}}
-                />
-                Opção 1
-            </label>
-            <label>
-                <input
-                type="radio"
-                name="radio2"
-                value="Opção 2"
-                {{Radio2Opcao2}}
-                />
-                Opção 2
-            </label>
-            <label>
-                <input
-                type="radio"
-                name="radio2"
-                value="Opção 3"
-                {{Radio2Opcao3}}
-                />
-                Opção 3
-            </label>
+
+        <div class="field">
+            <label for="observacoesmedicas1">Observações médicas</label>
+            <textarea
+                id="observacoesmedicas1"
+                value="{{observacoesmedicas1}}"
+                readonly
+            >{{observacoesmedicas1}}</textarea>
+        </div>
+
+        <div class="field">
+            {{DemandasPrincipais1}}
+        </div>
+
+
+        <div class="field">
+            {{disciplinasContent}}
         </div>
     </div>
 </body>
