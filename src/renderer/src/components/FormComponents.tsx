@@ -17,6 +17,8 @@ export function InlineInput ({ TittleInput, PlaceHolder, inputRef }) {
 };
 
 
+
+
 export function DateInput({ TittleInput, inputRef }) {
     return (
         <label>
@@ -283,12 +285,12 @@ export function RichTextInput({ className, inputRef }) {
     );
 }
 
-export function GroupSelectInput({ titleInput, options }) {
+export function GroupSelectInput({ titleInput, options, inputRef }) {
     return (
         <div>
             {titleInput && <div>{titleInput}</div>}
             <label>
-                <select className="bg-white border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-2">
+                <select className="bg-white border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-2" ref={inputRef}>
                     {options.map((group:any, index:any) => (
                         group.label ? (
                             <optgroup key={index} label={group.label}>

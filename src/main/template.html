@@ -5,9 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Triagem - {{nome}}</title>
     <style>
+
+
         html, body {
             font-family: Arial, sans-serif;
+        }
+
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+
+        *{
             margin: 0;
+        }
+
+        .page-break {
+            page-break-before: always;
         }
 
         .container {
@@ -84,7 +98,7 @@
             <label for="dataNascimento">Data de nascimento:</label>
             <input
                 id="dataNascimento"
-                type="text"
+                type="date"
                 value="{{dataNascimento}}"
                 readonly
             />
@@ -178,21 +192,55 @@
 
         <div class="field">
             <label for="observacoesmedicas1">Observações médicas</label>
-            <textarea
-                id="observacoesmedicas1"
-                value="{{observacoesmedicas1}}"
+            {{observacoesmedicas1}}
+        </div>
+        
+        <div>
+            <h4>Disciplinas requeridas:</h4>
+            {{disciplinasContent}}
+        </div>
+        
+        <div class="field">
+            <label for="NomeEncaminhadoPor">Encaminhado por:</label>
+            <input
+            id="NomeEncaminhadoPor"
+            type="text"
+            value="{{NomeEncaminhadoPor}}"
+            readonly
+            />
+        </div>
+        
+        <div class="field">
+            <label for="DataUltimaConsulta">Data da última consulta:</label>
+            <input
+                id="DataUltimaConsulta"
+                type="date"
+                value="{{DataUltimaConsulta}}"
                 readonly
-            >{{observacoesmedicas1}}</textarea>
+                />
         </div>
 
+        <div>
+            <h4>Acompanhamentos profissionais já realizados anteriormente:</h4>
+            {{acompanhamentosContent}}
+        </div>
+
+        <div class="field">
+            <label for="observacoesmedicas1">Observações médicas</label>
+            {{observacoesmedicas2}}
+        </div>
+
+        
         <div class="field">
             {{DemandasPrincipais1}}
         </div>
 
-
-        <div class="field">
-            {{disciplinasContent}}
+        <div>
+            <h2>Histórico Gestacional e Natal:</h2>
+            <p>Semanas de gestação: {{selectedGestacao}}</p>
+            <p>Tipo de parto: {{selectedParto}}</p>
         </div>
+        
     </div>
 </body>
 </html>
