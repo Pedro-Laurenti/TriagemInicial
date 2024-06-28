@@ -17,6 +17,27 @@ export function InlineInput ({ TittleInput, PlaceHolder, inputRef }) {
 };
 
 
+export function InlineInputFixed ({ TittleInput, PlaceHolder, inputRef ,valueInputFixed}) {
+    return (
+        <div>
+            <label>
+                {TittleInput}
+                <input
+                    ref={inputRef}
+                    className="border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-6"
+                    placeholder={PlaceHolder}
+                    type="text"
+                    value={valueInputFixed}
+                    readOnly
+                />
+            </label>
+        </div>
+    );
+};
+
+
+
+
 
 
 export function DateInput({ TittleInput, inputRef }) {
@@ -290,7 +311,7 @@ export function GroupSelectInput({ titleInput, options, inputRef }) {
         <div>
             {titleInput && <div>{titleInput}</div>}
             <label>
-                <select className="bg-white border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-2" ref={inputRef}>
+                <select className="bg-white border border-slate-300 rounded px-4 py-2 w-full text-slate-600 mb-5" ref={inputRef}>
                     {options.map((group:any, index:any) => (
                         group.label ? (
                             <optgroup key={index} label={group.label}>
@@ -322,7 +343,8 @@ interface Question {
         value: string;
         question: string;
         inputType: string;
-        inputName: string;
+        name: string;
+        ref: any;
     };
 }
 
@@ -330,10 +352,10 @@ interface BooleanRadioInputProps {
     questions: Question[];
 }
 
-export function BooleanRadioInput({ questions }) {
-    const [followUpDetails, setFollowUpDetails] = useState({});
+export function BooleanRadioInput({ questions }: BooleanRadioInputProps) {
+    const [followUpDetails, setFollowUpDetails] = useState<{ [key: string]: boolean }>({});
 
-    const handleRadioChange = (event, followUp, name) => {
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>, followUp: any, name: string) => {
         if (followUp) {
             setFollowUpDetails((prevDetails) => ({
                 ...prevDetails,
@@ -368,7 +390,8 @@ export function BooleanRadioInput({ questions }) {
                                 <input
                                     className="p-1 border rounded w-full"
                                     type={q.followUp.inputType}
-                                    name={q.followUp.inputName}
+                                    name={q.followUp.name}
+                                    ref={q.followUp.ref}
                                 />
                             </label>
                         </div>
@@ -379,7 +402,8 @@ export function BooleanRadioInput({ questions }) {
     );
 }
 
-export function TriagemNeonatal ({ initialCheckboxes }) {
+
+export function TriagemNeonatal({ initialCheckboxes }) {
     const [checkboxes, setCheckboxes] = useState(initialCheckboxes);
 
     const handleCheckboxChange = (id) => {
@@ -392,11 +416,19 @@ export function TriagemNeonatal ({ initialCheckboxes }) {
         );
     };
 
+    const handleRadioChange = (id, value) => {
+        setCheckboxes((prevCheckboxes) =>
+            prevCheckboxes.map((checkbox) =>
+                checkbox.id === id ? { ...checkbox, selectedRadio: value } : checkbox
+            )
+        );
+    };
+
     return (
-        <div className="my-8 ">
+        <div className="my-8">
             <SubtittleForm SubTittle={"Triagem Neonatal"} />
-            {checkboxes.map((checkbox: { id: React.Key | null | undefined; label: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; isChecked: any; radios: any[]; }) => (
-                <div key={checkbox.id} className="grid grid-cols-2">
+            {checkboxes.map((checkbox) => (
+                <div key={checkbox.id} className="grid grid-cols-2 mb-4">
                     <p>{checkbox.label}</p>
                     <label>
                         <input
@@ -418,7 +450,10 @@ export function TriagemNeonatal ({ initialCheckboxes }) {
                                         type="radio"
                                         name={`radio-${checkbox.id}`}
                                         id={`${radioLabel.toLowerCase()}-${checkbox.id}`}
-                                    />{' '}
+                                        value={radioLabel.toLowerCase()}
+                                        checked={checkbox.selectedRadio === radioLabel.toLowerCase()}
+                                        onChange={(e) => handleRadioChange(checkbox.id, e.target.value)}
+                                    />
                                     {radioLabel}
                                 </label>
                             ))}
@@ -428,13 +463,10 @@ export function TriagemNeonatal ({ initialCheckboxes }) {
             ))}
         </div>
     );
-};
+}
 
 
-
-
-
-export function ExamesSelect ({ initialSelects }) {
+export function ExamesSelect({ initialSelects }) {
     const [selects, setSelects] = useState(initialSelects);
 
     const handleSelectChange = (id, value) => {
@@ -443,6 +475,14 @@ export function ExamesSelect ({ initialSelects }) {
                 select.id === id
                     ? { ...select, selected: value }
                     : select
+            )
+        );
+    };
+
+    const handleRadioChange = (id, value) => {
+        setSelects((prevSelects) =>
+            prevSelects.map((select) =>
+                select.id === id ? { ...select, selectedRadio: value } : select
             )
         );
     };
@@ -476,6 +516,9 @@ export function ExamesSelect ({ initialSelects }) {
                                         type="radio"
                                         name={`radio-${select.id}`}
                                         id={`${radioLabel.toLowerCase()}-${select.id}`}
+                                        value={radioLabel.toLowerCase()}
+                                        checked={select.selectedRadio === radioLabel.toLowerCase()}
+                                        onChange={(e) => handleRadioChange(select.id, e.target.value)}
                                     />{' '}
                                     {radioLabel}
                                 </label>
@@ -486,4 +529,4 @@ export function ExamesSelect ({ initialSelects }) {
             ))}
         </div>
     );
-};
+}

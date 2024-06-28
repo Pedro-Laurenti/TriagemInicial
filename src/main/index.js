@@ -140,7 +140,7 @@ ipcMain.handle('generate-pdf', async (event, formData) => {
                 path: filePath,
                 format: 'A4',
                 printBackground: true,
-                margin: { top: '20mm', bottom: '20mm', left: '20mm', right: '20mm' }
+                margin: { top: '5mm', bottom: '5mm', left: '5mm', right: '5mm' }
             });
             await browser.close();
             return `PDF salvo em: ${filePath}`;

@@ -9,7 +9,7 @@ export default function FormPage({ profissionalSelecionado }) {
     <div className=" bg-slate-200 h-screen">
       <div className="bg-sky-500 h-30 w-full py-5 px-20 text-white grid grid-cols-2 gap-4 place-items-center align-bottom">
         <div className="text-center">
-          <h2 className="text-4xl font-extrabold">TRIAGEM INICIAL INFANTIL</h2>
+          <h2 className="text-4xl font-extrabold">TRIAGEM INICIAL</h2>
           <h4 className="text-2xl">Rede de Clínicas - Therapies Love Kids</h4>
         </div>
         <img alt="logo" className="logo h-20" src={LogoTLK} />

@@ -5,7 +5,7 @@ export default function TittleForm({ Tittle }) {
 }
 
 export function SubtittleForm({ SubTittle }) {
-  return <h3 className="mb-3 text-xl">{SubTittle}</h3>
+  return <h3 className="mb-3 text-xl mt-10">{SubTittle}</h3>
 }
 
 TittleForm.propTypes = {
