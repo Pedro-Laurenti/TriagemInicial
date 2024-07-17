@@ -16,11 +16,12 @@ export default defineConfig({
         plugins: [externalizeDepsPlugin()]
     },
     renderer: {
+        dedupe: ['react', 'react-router'],
         resolve: {
-        alias: {
-            '@renderer': resolve(__dirname, 'src/renderer/src'),
-            '@template': resolve(__dirname, 'src/renderer/')
-        }
+            alias: {
+                '@renderer': resolve(__dirname, 'src/renderer/src'),
+                '@template': resolve(__dirname, 'src/renderer/')
+            }
         },
         plugins: [
             react(),
