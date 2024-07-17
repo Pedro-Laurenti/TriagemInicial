@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 const { ipcRenderer } = window
 import PropTypes from 'prop-types'
 
-import TittleForm, { SubtittleForm } from './TittleForm'
+import TittleForm, { SubtittleForm } from '@renderer/components/TittleForm'
 import IrmãosInput, {
     ContactInput,
     DateInputOutput,
@@ -18,7 +18,7 @@ import IrmãosInput, {
     TriagemNeonatal,
     ExamesSelect,
     InlineInputFixed
-} from './FormComponents'
+} from '@renderer/components/FormComponents'
 
 export default function Form({ profissional, idForm }) {
     return (

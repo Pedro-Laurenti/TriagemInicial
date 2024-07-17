@@ -1,11 +1,20 @@
 import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
-import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import icon from '../../resources/icon.png'
 import puppeteer from 'puppeteer'
 import fs from 'fs'
-import path from 'path'
-import template from './template.html'
+import path, { dirname, join } from 'path'
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+if (typeof process === 'undefined') {
+    globalThis.process = {
+        platform: '',
+        env: {}
+    };
+}
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -81,7 +90,7 @@ ipcMain.handle('generate-pdf', async (event, formData) => {
 
     try {
         const htmlTemplate = fs.readFileSync(
-            path.join(__dirname, './src/main/template.html'), 'utf-8'
+            path.join(__dirname, '../renderer/src/template.html'), 'utf-8'
         );
 
         const radioGroups = ['Radio1'];
@@ -110,8 +119,8 @@ ipcMain.handle('generate-pdf', async (event, formData) => {
         }
 
         // Adicionar valores selecionados dos selects
-        const selectedGestacao = formData['selectedGestacao'] || '';
-        const selectedParto = formData['selectedParto'] || '';
+        // const selectedGestacao = formData['selectedGestacao'] || '';
+        // const selectedParto = formData['selectedParto'] || '';
 
         formData['disciplinasContent'] = `<ul>${disciplinasContent}</ul>`;
         formData['acompanhamentosContent'] = `<ul>${acompanhamentosContent}</ul>`;

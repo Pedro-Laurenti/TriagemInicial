@@ -283,7 +283,7 @@ export function SimpleTextInput({ TittleInput, placeholder, inputRef }) {
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import TittleForm, { SubtittleForm } from './TittleForm';
+import { SubtittleForm } from './TittleForm';
 
 export function RichTextInput({ className, inputRef }) {
     return (

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triagem - {{nome}}</title>
+    <style>
+        html, body {
+            font-family: Arial, sans-serif;
+        }
+        @page {
+            size: A4;
+            margin: 5mm;
+        }
+        * {
+            margin: 0;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+        }
+        .field {
+            width: 100%;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .field-ver {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            gap: 50px;
+        }
+        .field label {
+            font-weight: bold;
+            width: 100%;
+        }
+        .field input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .field textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .header {
+            background-color: #34b0e6;
+            width: 100%;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 50px;
+            gap: 10px;
+        }
+        h1, h2, h3, h4, h5 {
+            margin: 0;
+        }
+
+        h2{
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+        h3{
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .false-input-text{
+            border: 1px solid silver;
+            width: 100%;
+            padding: 10px 10px;
+            border-radius: 5px;
+        }
+
+        .field-fullwd{
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .demandas-princ{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TRIAGEM INICIAL INFANTIL</h1>
+            <h2>Rede de Clínicas - Therapies Love Kids</h2>
+        </div>
+        <h3>Identificação de Autoria:</h3>
+        <div class="field">
+            <label for="nome">Profissional:</label>
+            <input id="nome" type="text" value="{{ProfissionalNome}}" readonly />
+        </div>
+        <div class="field">
+            <label for="nome">Especialidade:</label>
+            <input id="nome" type="text" value="{{ProfissionalEspecialidade}}" readonly />
+        </div>
+        <div class="field">
+            <label for="nome">Nº do Conselho:</label>
+            <input id="nome" type="text" value="{{ProfissionalNdoConselho}}" readonly />
+        </div>
+        <div class="field">
+            <label for="nome">Formação:</label>
+            <input id="nome" type="text" value="{{ProfissionalFormação}}" readonly />
+        </div>
+
+        <h3>Identificação do Paciente:</h3>
+        <div class="field">
+            <label for="nome">Nome do paciente:</label>
+            <input id="nome" type="text" value="{{nome}}" />
+        </div>
+        <div class="field">
+            <label for="dataNascimento">Data de nascimento:</label>
+            <input id="dataNascimento" type="date" value="{{dataNascimento}}" readonly />
+        </div>
+        <div class="field">
+            <label for="peso">Peso:</label>
+            <input id="peso" type="text" value="{{peso}}" readonly />
+        </div>
+        <div class="field">
+            <label for="altura">Altura:</label>
+            <input id="altura" type="text" value="{{altura}}" readonly />
+        </div>
+        <div class="field">
+            <label for="nomePai">Nome do pai:</label>
+            <input id="nomePai" type="text" value="{{nomePai}}" readonly />
+        </div>
+        <div class="field">
+            <label for="nomeMãe">Nome da mãe:</label>
+            <input id="nomeMãe" type="text" value="{{nomeMãe}}" readonly />
+        </div>
+        <div class="field">
+            <label for="contato">Contato dos responsáveis:</label>
+            <input id="contato" type="text" value="{{contato}}" readonly />
+        </div>
+        <div class="field">
+            <label for="irmãos">Irmãos:</label>
+            <input id="irmãos" type="text" value="{{irmãos}}" readonly />
+        </div>
+
+        <h2>2. DIAGNÓSTICO/HIPÓTESE DIAGNÓSTICA</h2>
+        <div class="field-ver">
+            <label>
+                <input type="radio" name="radio1" value="Sem indicação diagnóstica" {{Radio1IndicaçãoDiagnóstica}} />
+                Sem indicação diagnóstica
+            </label>
+            <label>
+                <input type="radio" name="radio1" value="Hipótese diagnóstica" {{Radio1HipóteseDiagnóstica}} />
+                Hipótese diagnóstica
+            </label>
+            <label>
+                <input type="radio" name="radio1" value="Diagnóstico concluído" {{Radio1DiagnósticoConcluido}} />
+                Diagnóstico concluído
+            </label>
+        </div>
+
+        <div class="field">
+            <label for="observacoesDiagnosticos">Observações médicas:</label>
+            <input id="peso" type="text" value="{{observacoesDiagnosticos}}" readonly />
+        </div>
+
+        <h2>3. DISCIPLINAS REQUERIDAS</h2>        
+        <div class="false-input-text">
+            {{disciplinasContent}}
+        </div>
+
+        <h2>4. HISTÓRICO DE ACOMPANHAMENTO</h2>
+        <div class="field">
+            <label for="NomeEncaminhadoPor">Encaminhado por:</label>
+            <input id="NomeEncaminhadoPor" type="text" value="{{NomeEncaminhadoPor}}" readonly />
+        </div>
+        <div class="field">
+            <label for="DataUltimaConsulta">Data da última consulta:</label>
+            <input id="DataUltimaConsulta" type="date" value="{{DataUltimaConsulta}}" readonly />
+        </div>
+        
+        <div class="field">
+            <h3>Acompanhamentos profissionais já realizados anteriormente:</h3>
+            <div class="false-input-text">
+                {{acompanhamentosContent}}
+            </div>
+        </div>
+
+        <div class="field">
+            <h3>Observações acerca dos acompanhamentos anteriores:</h3>
+            <div class="false-input-text">
+                {{observacoesAcompanhamentosAnteriores}}
+            </div>
+        </div>
+
+        <h2>5. DEMANDAS PRINCIPAIS RELATADAS</h2>
+        <div class="field">
+            <div class="false-input-text">
+                <div class="demandas-princ">{{DemandasPrincipais}}</div>
+            </div>
+        </div>
+
+        <h2>6. HISTÓRICO GESTACIONAL E NATAL</h2>
+        <div class="field">
+            <label for="selectedGestacao">Semanas de gestação:</label>
+            <input id="selectedGestacao" type="text" value="{{selectedGestacao}}" readonly />
+        </div>
+
+        <div class="field">
+            <label for="selectedParto">Tipo de parto:</label>
+            <input id="selectedParto" type="text" value="{{selectedParto}}" readonly />
+        </div>
+
+        <div class="field-ver">
+            <div class="field">
+                <label for="Apgar1">Apgar 1 minuto:</label>
+                <input id="Apgar1" type="text" value="{{Apgar1}}" readonly />
+            </div>
+            <div class="field">
+                <label for="Apgar2">Apgar 5 minutos:</label>
+                <input id="Apgar2" type="text" value="{{Apgar2}}" readonly />
+            </div>
+        </div>
+
+        <div class="field-ver">
+            <div class="field">
+                <label for="PesoAoNascer">Peso ao nascer:</label>
+                <input id="PesoAoNascer" type="text" value="{{PesoAoNascer}}" readonly />
+            </div>
+            <div class="field">
+                <label for="AlturaAoNascer">Altura ao nascer:</label>
+                <input id="AlturaAoNascer" type="text" value="{{AlturaAoNascer}}" readonly />
+            </div>
+        </div>
+
+        <div class="field-fullwd">
+            <h3>Detalhes:</h3>
+            <p>Gestação planejada: {{gestacao-planejada}}</p>
+            <p>Gestação desejada: {{gestacao-desejada}}</p>
+            <p>Uso de substâncias durante a gestação: {{gestacao-substancias}}</p>
+            <p>Detalhes sobre o uso de substâncias: {{gestacao-substanciasdetalhes}}</p>
+        </div>
+
+        <div class="field-fullwd">
+            <h4>Complicações durante a gestação:</h4>
+            <p>Complicações: {{complicacoes-durantegestacao}}</p>
+            <p>Detalhes: {{complicacoes1Details}}</p>
+        </div>
+        <div class="field-fullwd">
+            <h4>Complicações durante o parto:</h4>
+            <p>Complicações: {{complicacoes-duranteparto}}</p>
+            <p>Detalhes: {{complicacoes2Details}}</p>
+        </div>
+        <div class="field-fullwd">
+            <h4>Complicações após o nascimento:</h4>
+            <p>Complicações: {{complicacoes-aposnascimento}}</p>
+            <p>Detalhes: {{complicacoes3Details}}</p>
+        </div>
+
+        <div class="field-fullwd">
+            <h3>Triagem Neonatal</h3>
+            <p>Teste da linguinha: {{Neonatal-linguinha}}</p>
+            <p>Teste do olhinho: {{Neonatal-olhinho}}</p>
+            <p>Teste da orelhinha: {{Neonatal-orelhinha}}</p>
+            <p>Teste do pezinho: {{Neonatal-pezinho}}</p>
+        </div>
+
+        <h2>7. HISTÓRICO DE SAÚDE</h2>
+        <div class="field-fullwd">
+            <p>Exames audiológicos: {{exam-1}} - Estado: {{exam-1-status}}</p>
+            <p>Exames oftalmológico: {{exam-2}} - Estado: {{exam-2-status}}</p>
+            <p>Exames eletrodiagnósticos: {{exam-3}} - Estado: {{exam-3-status}}</p>
+            <p>Exames função Pulmonar: {{exam-4}} - Estado: {{exam-4-status}}</p>
+        </div>
+    </div>
+</body>
+</html>

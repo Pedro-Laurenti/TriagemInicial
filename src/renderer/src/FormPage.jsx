@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import Form from './components/Form'
-import LogoTLK from './assets/1-2-logo-white.svg'
+import Form from '@renderer/components/Form'
+import LogoTLK from '@renderer/assets/1-2-logo-white.svg'
 import PropTypes from 'prop-types'
 
 export default function FormPage({ profissionalSelecionado }) {

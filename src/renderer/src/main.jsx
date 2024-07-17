@@ -1,10 +1,14 @@
-import './assets/main.scss'
-
+import '@renderer/assets/main.scss'
+import React from 'react';
 import ReactDOM from 'react-dom/client'
-import App from './App'
+import App from '@renderer/App'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <div id="pdfContent">
-    <App />
-  </div>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
+    <React.StrictMode>
+        <div id="pdfContent">
+            <App />
+        </div>
+    </React.StrictMode>
 )

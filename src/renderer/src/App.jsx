@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import SelectPage from './SelectPage'
-import FormPage from './FormPage'
-import profissionaisData from './assets/dados.json'
+import SelectPage from '@renderer/SelectPage'
+import FormPage from '@renderer/FormPage'
+import profissionaisData from '@renderer/assets/dados.json'
 
-function App() {
+export default function App() {
   const [profissionais, setProfissionais] = useState([])
   const [profissionalSelecionado, setProfissionalSelecionado] = useState(null)
 
@@ -40,5 +40,3 @@ function App() {
     </Router>
   )
 }
-
-export default App

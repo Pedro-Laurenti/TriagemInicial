@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import LogoTLK from './assets/1-2-logo-white.svg'
-import imgCapa from './assets/img capa.png'
-import gridCapa from './assets/gridicon.svg'
+import LogoTLK from '@renderer/assets/1-2-logo-white.svg'
+import imgCapa from '@renderer/assets/img capa.png'
+import gridCapa from '@renderer/assets/gridicon.svg'
 import PropTypes from 'prop-types'
 
 const SelectPage = ({ profissionais, onProfissionalChange }) => {
